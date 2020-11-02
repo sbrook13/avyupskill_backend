@@ -92,6 +92,9 @@ DATABASES = {
     }
 }
 
+# Included as User model extended with AbstractUser
+# AUTH_USER_MODEL = 'avyupskill_app.User'
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
