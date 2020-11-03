@@ -1,0 +1,1 @@
+web: gunicorn avy_upskill_project.wsgi

@@ -54,3 +54,49 @@ class BeaconPark(models.Model):
 
 #     def __str__(self):              
 #       return f'{self.username}'
+
+# class Rating(models.Model):
+#   RATINGS = (
+#     ('1', 'The Worst'),
+#     ('2', 'Meh'),
+#     ('3', 'Average'),
+#     ('4', 'Yay'),
+#     ('5', 'The Best'),
+#   )
+#   rating = models.CharField(max_length=1, choices=RATINGS)
+#   user = models.ForeignKey(
+#     settings.AUTH_USER_MODEL, 
+#     related_name='user', 
+#     on_delete=models.CASCADE, 
+#     verbose_name="The Reviewer",
+#   )
+#   area = models.ForeignKey(Area, on_delete=models.CASCADE)
+
+#   def __str__(self):
+#     return f'{self.area}: {self.rating}'
+
+# class Comment(models.Model):
+#   feedback = models.CharField(max_length=400)
+#   user = models.ForeignKey(
+#     settings.AUTH_USER_MODEL, 
+#     related_name='user', 
+#     on_delete=models.CASCADE, 
+#     verbose_name="The Reviewer",
+#   )
+#   area = models.ForeignKey(Area, on_delete=models.CASCADE)
+
+#   def __str__(self):
+#     return f'{self.user}: {self.area}'
+
+# class BackcountryDay(models.Model):
+#   location = models.CharField(max_length=200)
+#   date = models.DateField()
+#   user = models.ForeignKey(
+#     settings.AUTH_USER_MODEL, 
+#     related_name='user', 
+#     on_delete=models.CASCADE, 
+#   )
+#   area = models.ForeignKey(Area, on_delete=models.CASCADE)
+
+#   def __str__(self):
+#     return f'{self.provider}: {self.class_type} - {self.start_date}'
