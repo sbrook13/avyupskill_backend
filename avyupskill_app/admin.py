@@ -3,7 +3,7 @@ from .models import (
   Area,  
   Course, 
   BeaconPark,
-  # User, 
+  User, 
   # Comment, 
   # Rating, 
   # BackcountryDay
@@ -13,7 +13,7 @@ from .models import (
 admin.site.register(Area)
 admin.site.register(Course)
 admin.site.register(BeaconPark)
-# admin.site.register(User)
+admin.site.register(User)
 # admin.site.register(Comment)
 # admin.site.register(Rating)
 # admin.site.register(BackcountryDay)

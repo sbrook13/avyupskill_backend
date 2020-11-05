@@ -1,23 +1,26 @@
 from django.urls import path, include
-from . import views
+from .views import (
+  UserCreateView, 
+  UserView, 
+  LoginView,
+  AreaView,
+  CourseView,
+  BeaconParkView
+)
 from rest_framework import routers
-# from .api import SignupAPI, LoginAPI, CoursesAPI, BeaconParksAPI
-from django.contrib.auth import views as auth_views
+# from django.contrib.auth import views as auth_views
 
 router = routers.DefaultRouter()
-router.register('areas', views.AreaView)
-router.register('courses', views.CourseView)
-router.register('beacon_parks', views.BeaconParkView)
-# router.register('users', views.UserView)
-# router.register('comments', views.CommentView)
-# router.register('ratings', views.RatingView)
-# router.register('backcountry_day', views.BackcountryDayView)
+router.register('areas', AreaView)
+router.register('courses', CourseView)
+router.register('beacon_parks', BeaconParkView)
+router.register('users', UserView)
+router.register('comments', views.CommentView)
+router.register('ratings', views.RatingView)
+router.register('backcountry_day', views.BackcountryDayView)
 
 urlpatterns = [
+  path('signup', UserCreateView.as_view()),
+  path('login', LoginView.as_view()),
   path('', include(router.urls)),
-  # path('api/auth/signup', SignupAPI.as_view()),
-  # path('api/auth/login', LoginAPI.as_view()),
-  # path('api/courses', CoursesAPI.as_view()),
-  # path('api/beacon-parks', BeaconParksAPI.as_view()),
-
 ]
