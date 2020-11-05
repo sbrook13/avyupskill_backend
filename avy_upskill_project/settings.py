@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SECRET_KEY'] or config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG'] or config('DEBUG', cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -173,4 +173,5 @@ JWT_AUTH = {
   'JWT_AUTH_COOKIE': None,
 }
 
+# Activate Django-Heroku.
 django_heroku.settings(locals())
