@@ -1,2 +1,7 @@
-avy_upskill_project/secrets.py
+#ENVIRONMENTS
+.env
+.venv
+env/
+venv/
+ENV/
 __pycache__/
