@@ -4,7 +4,7 @@ from django.contrib.auth.models import UserManager, AbstractBaseUser
 # Create your models here.
 class Area(models.Model):
   name = models.CharField(max_length=100)
-  description = models.CharField(max_length=1000)
+  description = models.CharField(max_length=2000)
   location = models.CharField(max_length=100)
   lat = models.CharField(max_length=50, blank=True)
   lon = models.CharField(max_length=50, blank=True)
@@ -71,7 +71,7 @@ class Rating(models.Model):
   rating = models.CharField(max_length=1, choices=RATINGS)
   user = models.ForeignKey(
     User,
-    related_name='user', 
+    related_name='rating', 
     on_delete=models.CASCADE, 
     verbose_name="The Reviewer",
   )
@@ -84,7 +84,7 @@ class Comment(models.Model):
   feedback = models.CharField(max_length=400)
   user = models.ForeignKey(
     User, 
-    related_name='user', 
+    related_name='comment', 
     on_delete=models.CASCADE, 
     verbose_name="The Reviewer",
   )
@@ -98,7 +98,7 @@ class BackcountryDay(models.Model):
   date = models.DateField()
   user = models.ForeignKey(
     User, 
-    related_name='user', 
+    related_name='backcountry_day', 
     on_delete=models.CASCADE, 
   )
   area = models.ForeignKey(Area, on_delete=models.CASCADE)

@@ -79,14 +79,14 @@ class BeaconParkView(viewsets.ModelViewSet):
 class CommentView(viewsets.ModelViewSet):
   queryset = Comment.objects.all()
   serializer_class = CommentSerializer
-  permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+  permission_classes = (IsAuthenticatedOrReadOnly,)
 
 class RatingView(viewsets.ModelViewSet):
   queryset = Rating.objects.all()
   serializer_class = RatingSerializer
-  permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+  permission_classes = (IsAuthenticatedOrReadOnly,)
 
 class BackcountryDayView(viewsets.ModelViewSet):
   queryset = BackcountryDay.objects.all()
   serializer_class = BackcountryDaySerializer
-  permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+  permission_classes = (IsAuthenticatedOrReadOnly,)

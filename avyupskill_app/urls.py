@@ -4,7 +4,10 @@ from .views import (
   UserView, 
   LoginView,
   AreaView,
+  CommentView,
+  RatingView,
   CourseView,
+  BackcountryDayView,
   BeaconParkView
 )
 from rest_framework import routers
@@ -15,9 +18,9 @@ router.register('areas', AreaView)
 router.register('courses', CourseView)
 router.register('beacon_parks', BeaconParkView)
 router.register('users', UserView)
-router.register('comments', views.CommentView)
-router.register('ratings', views.RatingView)
-router.register('backcountry_day', views.BackcountryDayView)
+router.register('comments', CommentView)
+router.register('ratings', RatingView)
+router.register('backcountry_day', BackcountryDayView)
 
 urlpatterns = [
   path('signup', UserCreateView.as_view()),
