@@ -44,7 +44,7 @@ def clear_seeds():
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
+    clear_seeds()
     seed_parks()
     seed_areas()
-    clear_seeds()
     print("completed area and beacon park seeds")

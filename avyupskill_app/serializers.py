@@ -95,7 +95,7 @@ class AreaSerializer(serializers.ModelSerializer):
 
   class Meta:
     model=Area
-    fields=('id','name','description', 'location', 'comments', 'ratings')
+    fields=('id','name','description', 'location', 'lon', 'lat', 'comments', 'ratings')
 
 
 class CourseSerializer(serializers.ModelSerializer):

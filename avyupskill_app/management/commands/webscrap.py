@@ -40,42 +40,44 @@ for row in allRows:
   for detail in class_details:
     dataRow.append(detail.text)
   allCourses.append(dataRow)
-# titles = allCourses[0]
-# allCourses = allCourses[1:]
-print(allCourses)
+titles = allCourses[0]
+allCourses = allCourses[1:]
 
 def seed_courses():
   for i in allCourses:
     start = get_date(i[2])
-    end = get_date(i[3])
-    print(end)
-    # course = Course(
-    #   class_type=i[0],
-    #   provider=i[1],
-    #   start_date= start,
-    #   end_date=end,
-    #   location=i[4],
-    #   details_url=i[6],
-    #   aiare_url=i[7],
-    #   provider_url=i[8],
-    #   phone=i[9],
-    #   contact_email=i[10],
-    #   cost=i[14],
-    # )
-    # course.save()
+    if i[3] == "" :
+      end = start
+    else: 
+      end = get_date(i[3])
+    course = Course(
+      class_type=i[0],
+      provider=i[1],
+      start_date= start,
+      end_date=end,
+      location=i[4],
+      details_url=i[6],
+      aiare_url=i[7],
+      provider_url=i[8],
+      phone=i[9],
+      contact_email=i[10],
+      cost=i[14],
+    )
+    course.save()
 
 def get_date(date):
-  mmddyyyy = date
-  yyyymmdd = mmddyyyy[6:] + "-" + mmddyyyy[:2] + "-" + mmddyyyy[3:5]
-  return(yyyymmdd)
+  newDate = datetime.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
+  # mmddyyyy = date
+  # yyyymmdd = mmddyyyy[6:] + "-" + mmddyyyy[:2] + "-" + mmddyyyy[3:5]
+  return(newDate)
 
 def clear_data():
   Course.objects.all().delete()
 
 class Command(BaseCommand):
   def handle(self, *args, **options):
-    seed_courses()
     clear_data()
+    seed_courses()
     print("completed course seeds")
     
 # EXAMPLE COURSE FROM BS4
