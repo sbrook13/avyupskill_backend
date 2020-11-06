@@ -23,7 +23,6 @@ def seed_parks():
   BeaconPark(name= "Vail Ski Resort", nearest_city="Vail, CO", lon="-106.3550", lat="39.6061").save()
   BeaconPark(name= "Winter Park Ski Resort", nearest_city="Winter Park, CO", lon="-105.7625", lat="39.8868").save()
 
-
 def seed_areas():
   Area(name= "Saint Vrain Mountain", description="From the end of the Long Lake Approach, this descent heads down the looker's left side of a wide, exposed bowl. The bowl could be worth exploring but is south/southeast facing with conditions that weren't ideal. The line shown here stays to the looker's left of the bowl with a less-exposed aspect and more terrain features to anchor the snowpack. There are four or five good turns and a small cornice at the top for those looking to send a little airtime. The line trends to the skier's left heading east so as to traverse the bottom of the bowl for a short, side-step of the eastern nose of the bowl to reach another, longer line. This second line has a fun beginning section to a rollover that is worth stopping and scouting. Below the roll-over, there are another three to four turns before you duck into the trees and trend to the left, east, to eventually meet back up with the Long Lake Approach at Long Lake Road. We transitioned at a small lake to make the short skin to reconnect with the Long Lake Approach.", location="Allenspark", lon="-105.5505237", lat="40.159257").save()
   Area(name= "Caribou", description="On a powder day, you'll need a 4WD car to access the top part of Caribou Road since the road is not plowed in the winter. Park alongside the road by the old mining structures, or at the end of the road. The approach is mellow and flat for about 1.75 miles. Take the second fork in the trail, to the right. From the broken down cabins on the left, follow the trail to the right. Here you'll start your ascent up the base of the slope. This hike takes about 10 minutes and there should be a distinct skin track when no fresh snow has fallen. At the top of the knob, head right to the open meadow and choose your line. This area is lap-able without backtracking on the approach. The slope is open and east facing, so prone to wind loading and fills in nice early season, but can lead to stability issues on steeper aspects. Overall, this is a safe and playful slope that you can lap 3 - 4 times on a good day. On the hike out, get ready to strap skins on, as the last section of the hike is a low-grade climb out to the parking lot.", location="Nederland", lon="-105.649182", lat="39.9810673").save()
@@ -39,14 +38,6 @@ def seed_areas():
   Area(name= "Mount Trelease NE Aspect", description="Use the same approach as with Dry Gulch, then pick an ascent line to your left. Kick a skin track up (many times you can find one already cut) then have some fun skiing down through the trees. There are many options available at various angles.", location="Loveland Pass Exit", lon="-105.8862519", lat="39.6859544").save()
   Area(name= "Humbug to Half Dome", description="Start from the Mayflower Gulch parking area. Just a hundred yards or so up the trail, it opens up with a spectacular view of Fletcher Mountain. From here, find a good place to cross the creek on your left and make your way up to an aqueduct north of the creek. This aqueduct is frequented by snowshoers and other winter travelers, so it's pretty easy to find. Follow this all the way around the west side of Mayflower Hill until you reach the next drainage, which is Humbug Creek. From Humbug Creek Approach, continue up the creek, staying in the belly of the drainage. After passing treeline, bank left while navigating some boulders and work your way into the left drainage that leads to a saddle to the southeast of half dome. Once you reach the saddle, continue up the ridge until you're at your line. The lines down half dome get less steep the further north you hike. Beware of cornices! Due to its aspect, this ridge consistently holds large, dangerous cornices off the N-E side.", location="Copper Mountain", lon="-106.1340579", lat="39.5911661").save()
 
-# def seed_course():
-#   for i in get_fishs():
-#   fish = Fish(
-#     name=i["Species Name"],
-#     scientific_name=i["Scientific Name"],
-#   )
-#   fish.save()
-
 def clear_seeds():
   BeaconPark.objects.all().delete()
   Area.objects.all().delete()
@@ -55,5 +46,5 @@ class Command(BaseCommand):
   def handle(self, *args, **options):
     seed_parks()
     seed_areas()
-    # clear_seeds()
-    print("completed")
+    clear_seeds()
+    print("completed area and beacon park seeds")
