@@ -3,6 +3,10 @@ import re
 import urllib.request
 from bs4 import BeautifulSoup
 
+import requests
+from django.core.management.base import BaseCommand
+from ...models import Course
+
 import os, ssl
 if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
 getattr(ssl, '_create_unverified_context', None)):
@@ -49,6 +53,16 @@ def seed_courses():
     start_date=i[9],
     end_date=i[10]
   )
+  course.save()
+
+def clear_data():
+  Course.objects.all().delete()
+
+class Command(BaseCommand):
+  def handle(self, *args, **options):
+    seed_courses()
+    clear_data()
+    print("completed")
     
 # EXAMPLE COURSE FROM BS4
 # ['https://aiare.info/course_detail.php?recid=9303', 
