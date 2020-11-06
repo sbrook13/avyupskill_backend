@@ -24,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SECRET_KEY'] or config('SECRET_KEY')
+# SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -156,6 +157,7 @@ JWT_AUTH = {
   'JWT_RESPONSE_PAYLOAD_HANDLER':
   'rest_framework_jwt.utils.jwt_response_payload_handler',
  
+#   'JWT_SECRET_KEY': config('JWT_SECRET_KEY'),
   'JWT_SECRET_KEY': os.environ['JWT_SECRET_KEY'] or config('JWT_SECRET_KEY'),
   'JWT_GET_USER_SECRET_KEY': None,
   'JWT_PUBLIC_KEY': None,

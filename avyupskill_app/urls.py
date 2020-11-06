@@ -3,6 +3,7 @@ from .views import (
   UserCreateView, 
   UserView, 
   LoginView,
+  ProfileView,
   AreaView,
   CommentView,
   RatingView,
@@ -25,5 +26,6 @@ router.register('backcountry_day', BackcountryDayView)
 urlpatterns = [
   path('signup', UserCreateView.as_view()),
   path('login', LoginView.as_view()),
+  path('profile', ProfileView.as_view()),
   path('', include(router.urls)),
 ]

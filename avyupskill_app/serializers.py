@@ -11,32 +11,9 @@ from . models import (
   Comment, 
   Rating, 
   BackcountryDay
-)
-
-
-class RatingSerializer(serializers.ModelSerializer):
-  class Meta:
-    model=Rating
-    fields=('id','rating','user', 'area')
-
-
-class CommentSerializer(serializers.ModelSerializer):
-  class Meta:
-    model=Comment
-    fields=('id','feedback','user', 'area')
-
-
-class BackcountryDaySerializer(serializers.ModelSerializer):
-  class Meta:
-    model=BackcountryDay
-    fields=('id','location','date', 'user', 'area')
-    
+)   
 
 class UserSerializer(serializers.ModelSerializer):
-  comments = CommentSerializer(many=True)
-  ratings = RatingSerializer(many=True)
-  backcountry_days = BackcountryDaySerializer(many=True)
-  
   class Meta:
     model=User
     fields=('id','username', 'password')
@@ -75,19 +52,68 @@ class LoginSerializer(serializers.Serializer):
     }
 
 
+class RatingSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Rating
+    fields=('id','rating','user', 'area')
+
+
+class CommentSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Comment
+    fields=('id','feedback','user', 'area')
+
+
+class BackcountryDaySerializer(serializers.ModelSerializer):
+  class Meta:
+    model=BackcountryDay
+    fields=('id','location','date', 'user', 'area')
+
+
+class ProfileSerializer(serializers.Serializer):
+  comments = CommentSerializer(many=True, required=False)
+  ratings = RatingSerializer(many=True, required=False)
+  backcountry_days = BackcountryDaySerializer(many=True, required=False)
+  def get(self):
+    jwt_token = data.get("token", None)
+    decoded_token = api_settings.JWT_DECODE_HANDLER(jwt_token)
+    fields=(
+      'id',
+      'username', 
+      'first_name', 
+      'email', 
+      'backcountry_days', 
+      'saved_areas', 
+      'ratings', 
+      'comments'
+    )
+
+
 class AreaSerializer(serializers.ModelSerializer):
   comments = CommentSerializer(many=True, read_only=True)
   ratings = RatingSerializer(many=True, read_only=True)
 
   class Meta:
     model=Area
-    fields=('id','name','description', 'location')
+    fields=('id','name','description', 'location', 'comments', 'ratings')
 
 
 class CourseSerializer(serializers.ModelSerializer):
   class Meta:
     model=Course
-    fields=('id','provider','class_type', 'location', 'start_date', 'end_date')
+    fields=(
+      'id',
+      'provider',
+      'class_type', 
+      'location', 
+      'start_date', 
+      'end_date', 
+      'details_url', 
+      'aiare_url', 
+      'provider_url', 
+      'phone', 
+      'cost'
+    )
 
 
 class BeaconParkSerializer(serializers.ModelSerializer):

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status, viewsets
 from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
 
 from .models import (
   Area,  
@@ -19,6 +19,7 @@ from .serializers import (
   CourseSerializer, 
   BeaconParkSerializer,
   UserSerializer, 
+  ProfileSerializer,
   LoginSerializer,
   CommentSerializer, 
   RatingSerializer, 
@@ -62,6 +63,27 @@ class LoginView(CreateAPIView):
     }
 
     return Response(response, status_code)
+
+
+class ProfileView(CreateAPIView):
+  serializer_class = ProfileSerializer
+  permission_classes = (IsAuthenticated,)
+
+  def list(self, request):
+    user = request.user
+    serializer = ProfileSerializer(user)
+    status_code = status.HTTP_200_OK
+    # response = {
+    #   'id': serializer.data['id'],
+    #   'username': serializer.data['username'],
+    #   'first_name': serializer.data['first_name'],
+    #   'email': serializer.data['email'],
+    #   'backcountry_days': serializer.data['backcountry_days'], 
+    #   'saved_areas': serializer.data['saved_areas'],
+    #   'ratings': serializer.data['ratings'],
+    #   'comments': serializer.data['comments'],
+    # }
+    return Response(serializer.data, status_code)
 
 
 class AreaView(viewsets.ModelViewSet):

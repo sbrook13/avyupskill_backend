@@ -23,6 +23,11 @@ class Course(models.Model):
   location = models.CharField(max_length=200)
   start_date = models.DateField()
   end_date = models.DateField()
+  details_url = models.CharField(max_length=200, blank=True, default="")
+  aiare_url = models.CharField(max_length=200, blank=True, default="")
+  provider_url = models.CharField(max_length=200, blank=True, default="")
+  phone = models.CharField(max_length=20, blank=True, default="")
+  cost = models.CharField(max_length=10, blank=True, default="")
 
   def __str__(self):
     return f'{self.provider}: {self.class_type} - {self.start_date}'
@@ -42,20 +47,16 @@ class User(AbstractBaseUser):
       max_length=20,
       unique=True,
     )
-    first_name = models.CharField(
-      verbose_name='First Name',
-      max_length=20,
-    )
     email = models.EmailField(
       verbose_name='Email Address',
       max_length=50,
-      unique=True,
+      unique=False,
     )
-    areas = models.ManyToManyField(Area, blank=True)
+    saved_areas = models.ManyToManyField(Area, blank=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS =('first_name', '')
+    REQUIRED_FIELDS =()
 
     def __str__(self):              
       return f'{self.username}'
