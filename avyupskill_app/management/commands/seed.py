@@ -47,4 +47,4 @@ class Command(BaseCommand):
     seed_parks()
     seed_areas()
     clear_seeds()
-    print("completed")
+    print("completed area and beacon park seeds")

@@ -14,20 +14,21 @@ class Area(models.Model):
 
 class Course(models.Model):
   CLASSES = (
-    ('1', 'AIARE 1'),
-    ('2', 'AIARE 2'),
+    ('1', 'AIARE 1 '),
+    ('2', 'AIARE 2 '),
     ('3', 'Avalanche Rescue'),
   )
-  provider = models.CharField(max_length=50)
-  class_type = models.CharField(max_length=1, choices=CLASSES)
+  provider = models.CharField(max_length=100)
+  class_type = models.CharField(max_length=30, choices=CLASSES)
   location = models.CharField(max_length=200)
   start_date = models.DateField()
   end_date = models.DateField()
-  details_url = models.CharField(max_length=200, blank=True, default="")
-  aiare_url = models.CharField(max_length=200, blank=True, default="")
-  provider_url = models.CharField(max_length=200, blank=True, default="")
-  phone = models.CharField(max_length=20, blank=True, default="")
-  cost = models.CharField(max_length=10, blank=True, default="")
+  details_url = models.CharField(max_length=300, blank=True, default="")
+  aiare_url = models.CharField(max_length=300, blank=True, default="")
+  provider_url = models.CharField(max_length=300, blank=True, default="")
+  phone = models.CharField(max_length=30, blank=True, default="")
+  contact_email = models.CharField(max_length=100, blank=True, default="")
+  cost = models.CharField(max_length=30, blank=True, default="")
 
   def __str__(self):
     return f'{self.provider}: {self.class_type} - {self.start_date}'
