@@ -67,8 +67,6 @@ def seed_courses():
 
 def get_date(date):
   newDate = datetime.strptime(date, "%m/%d/%Y").strftime("%Y-%m-%d")
-  # mmddyyyy = date
-  # yyyymmdd = mmddyyyy[6:] + "-" + mmddyyyy[:2] + "-" + mmddyyyy[3:5]
   return(newDate)
 
 def clear_data():
