@@ -60,9 +60,10 @@ class LoginView(CreateAPIView):
       'username': serializer.data['username'],
       'token': serializer.data['token'],
       'message': 'User logged in successfully',
+      'status': status_code
     }
 
-    return Response(response, status_code)
+    return Response(response)
 
 
 class ProfileView(CreateAPIView):
