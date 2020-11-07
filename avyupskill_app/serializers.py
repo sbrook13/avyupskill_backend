@@ -47,7 +47,7 @@ class LoginSerializer(serializers.Serializer):
         'User does not exist.'
       )
     return {
-      'username': user.username,
+      'user': user,
       'token': jwt_token
     }
 
