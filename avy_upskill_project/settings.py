@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_pdb',
     'rest_framework',
     'corsheaders',
     'avyupskill_app'
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_pdb.middleware.PdbMiddleware',
 ]
 
 ROOT_URLCONF = 'avy_upskill_project.urls'
@@ -141,7 +143,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',              
         ],    
     'DEFAULT_AUTHENTICATION_CLASSES': (     
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',     
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',    
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication', 
     )
 }
 
