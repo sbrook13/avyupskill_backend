@@ -1,56 +1,102 @@
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import update_last_login
+# from django.contrib.auth import authenticate
+# from django.contrib.auth.models import update_last_login
 from rest_framework_jwt.settings import api_settings
 from rest_framework import serializers
-from . models import (
+from .models import (
   Area,  
   Course, 
   BeaconPark,
   User, 
   Comment, 
   Rating, 
-  BackcountryDay
-)   
+  BackcountryDay,
+  FavoriteArea
+) 
+
+class UserObjectSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=User
+    fields=('id','username','password', 'first_name')
+
+
+class AreaObjectSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Area
+    fields=('id','name','description', 'location', 'lon', 'lat')
+
+
+class RatingObjectSerializer(serializers.ModelSerializer):
+  user = UserObjectSerializer(many=False)
+
+  class Meta:
+    model=Rating
+    fields=('id','user')
+
+
+class CommentObjectSerializer(serializers.ModelSerializer):
+  user = UserObjectSerializer(many=False)
+
+  class Meta:
+    model=Comment
+    fields=('id','feedback','user')
+
+class FavoriteAreaObjectSerializer(serializers.ModelSerializer):
+  user = UserObjectSerializer(many=False)
+  
+  class Meta:
+    model=Comment
+    fields=('id','user')
+
+
+class BackcountryDayObjectSerializer(serializers.ModelSerializer):
+  user = UserObjectSerializer(many=False)
+
+  class Meta:
+    model=BackcountryDay
+    fields=('id','location','journal', 'date', 'user')
+
+
+class AreaSerializer(serializers.ModelSerializer):
+  comments = CommentObjectSerializer(many=True, read_only=True)
+  ratings = RatingObjectSerializer(many=True, read_only=True)
+
+  class Meta:
+    model=Area
+    fields=('id','name','description', 'location', 'lon', 'lat', 'comments', 'ratings')
+
 
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model=User
-    fields=('id','username', 'password')
-    # extra_kwargs = { 'password': { 'write_only': True} }
+    fields=('id', 'username', 'password')
+    extra_kwargs = { 'password': { 'write_only': True} }
   
   def create(self, validated_data):
     validated_data['password'] = make_password(validated_data['password'])
-    user = User.objects.create(**validated_data)
-    return user
+    user = User.objects.create_user(**validated_data)
+    
+    return user 
 
-
-class LoginSerializer(serializers.Serializer):
-  username = serializers.CharField(max_length=20)
-  password = serializers.CharField(max_length=128, write_only=True)
-  token = serializers.CharField(max_length=255, read_only=True)
-
-  def validate(self, data):
-    username = data.get("username", None)
-    password = data.get("password", None)
-    user = authenticate(data, username=username, password=password)
-    if user is None:
-      raise serializers.ValidationError(
-          'Incorrect username and/or password.'
-      )
-    try:
-      payload = api_settings.JWT_PAYLOAD_HANDLER(user)
-      jwt_token = api_settings.JWT_ENCODE_HANDLER(payload)
-      update_last_login(None, user)
-    except User.DoesNotExist:
-      raise serializers.ValidationError(
-        'User does not exist.'
-      )
-    return {
-      'user': user,
-      'token': jwt_token
-    }
-
+class UserProfileSerializer(serializers.ModelSerializer):
+  backcountry_days = BackcountryDayObjectSerializer(many=True, required=False)
+  comments = CommentObjectSerializer(many=True, required=False)
+  ratings = RatingObjectSerializer(many=True, required=False)
+  fav_areas = FavoriteAreaObjectSerializer(many=True, required=False)
+  
+  class Meta:
+    model=User
+    fields=(
+      'id',
+      'first_name',
+      'username', 
+      'email',
+      'backcountry_days', 
+      'comments', 
+      'ratings',
+      'fav_areas'    
+    )
+  
 
 class RatingSerializer(serializers.ModelSerializer):
   class Meta:
@@ -63,39 +109,16 @@ class CommentSerializer(serializers.ModelSerializer):
     model=Comment
     fields=('id','feedback','user', 'area')
 
+class FavoriteAreaSerializer(serializers.ModelSerializer):
+  class Meta:
+    model=Comment
+    fields=('id','user', 'area')
+
 
 class BackcountryDaySerializer(serializers.ModelSerializer):
   class Meta:
     model=BackcountryDay
     fields=('id','location','date', 'user', 'area')
-
-
-class ProfileSerializer(serializers.Serializer):
-  comments = CommentSerializer(many=True, required=False)
-  ratings = RatingSerializer(many=True, required=False)
-  backcountry_days = BackcountryDaySerializer(many=True, required=False)
-  def get(self):
-    jwt_token = data.get("token", None)
-    decoded_token = api_settings.JWT_DECODE_HANDLER(jwt_token)
-    fields=(
-      'id',
-      'username', 
-      'first_name', 
-      'email', 
-      'backcountry_days', 
-      'saved_areas', 
-      'ratings', 
-      'comments'
-    )
-
-
-class AreaSerializer(serializers.ModelSerializer):
-  comments = CommentSerializer(many=True, read_only=True)
-  ratings = RatingSerializer(many=True, read_only=True)
-
-  class Meta:
-    model=Area
-    fields=('id','name','description', 'location', 'lon', 'lat', 'comments', 'ratings')
 
 
 class CourseSerializer(serializers.ModelSerializer):

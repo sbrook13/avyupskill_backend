@@ -1,31 +1,22 @@
 from django.urls import path, include
-from .views import (
-  UserCreateView, 
-  UserView, 
-  LoginView,
-  ProfileView,
-  AreaView,
-  CommentView,
-  RatingView,
-  CourseView,
-  BackcountryDayView,
-  BeaconParkView
-)
 from rest_framework import routers
+from . import views
+
 # from django.contrib.auth import views as auth_views
 
 router = routers.DefaultRouter()
-router.register('areas', AreaView)
-router.register('courses', CourseView)
-router.register('beacon_parks', BeaconParkView)
-router.register('users', UserView)
-router.register('comments', CommentView)
-router.register('ratings', RatingView)
-router.register('backcountry_day', BackcountryDayView)
+router.register('areas', views.AreaView)
+router.register('courses', views.CourseView)
+router.register('beacon_parks', views.BeaconParkView)
+router.register('users', views.UserView)
+router.register('comments', views.CommentView)
+router.register('ratings', views.RatingView)
+router.register('backcountry_days', views.BackcountryDayView)
+router.register('favorite_areas', views.FavoriteAreaView)
+router.register('profile', views.ProfileView)
+
 
 urlpatterns = [
-  path('signup', UserCreateView.as_view()),
-  path('login', LoginView.as_view()),
-  path('profile', ProfileView.as_view()),
+  path('signup', views.UserCreateView.as_view()),
   path('', include(router.urls)),
 ]
