@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import UserManager, AbstractUser
+from django.contrib.auth.models import UserManager, AbstractBaseUser
 
 # Create your models here.
 class Course(models.Model):
@@ -25,9 +25,10 @@ class Course(models.Model):
     
 class BeaconPark(models.Model):
   name = models.CharField(max_length=200)
-  nearest_city = models.CharField(max_length=200)
+  location = models.CharField(max_length=200)
   lat = models.FloatField(max_length=50)
   lon = models.FloatField(max_length=50)
+  description = models.CharField(max_length=100)
 
   def __str__(self):
     return f'{self.id}: {self.name}'
@@ -44,12 +45,32 @@ class Area(models.Model):
     return f'{self.id}: {self.name}'
 
 
-class User(AbstractUser):
-  first_name = models.CharField(max_length=50, blank=True, null=True)
+class User(AbstractBaseUser):
+  first_name = models.CharField(max_length=20, blank=True, null=True)
+  username = models.CharField(unique=True, max_length=50)
+  password = models.CharField(max_length=200)
   areas = models.ManyToManyField(Area, related_name="areas", through='FavoriteArea', blank=True)
+
+  objects = UserManager()
+  
+  USERNAME_FIELD = 'username'
+  REQUIRED_FIELDS =('first_name',)
   
   def __str__(self):              
     return f'{self.username}'
+
+
+class FavoriteArea(models.Model):
+  user = models.ForeignKey(
+    User, 
+    related_name='fav_areas', 
+    on_delete=models.CASCADE, 
+  )
+  area = models.ForeignKey(Area, related_name='fav_areas', on_delete=models.CASCADE)
+
+  def __str__(self):
+    return f'{self.id}: {self.user} - {self.area}'
+
 
 class Rating(models.Model):
   RATINGS = (
@@ -62,11 +83,11 @@ class Rating(models.Model):
   rating = models.CharField(max_length=1, choices=RATINGS)
   user = models.ForeignKey(
     User,
-    related_name='rating', 
+    related_name='ratings', 
     on_delete=models.CASCADE, 
     verbose_name="The Reviewer",
   )
-  area = models.ForeignKey(Area, related_name='rating', on_delete=models.CASCADE)
+  area = models.ForeignKey(Area, related_name='ratings', on_delete=models.CASCADE)
 
   def __str__(self):
     return f'{self.area}: {self.rating}'
@@ -75,11 +96,11 @@ class Comment(models.Model):
   feedback = models.TextField(max_length=1000)
   user = models.ForeignKey(
     User, 
-    related_name='comment', 
+    related_name='comments', 
     on_delete=models.CASCADE, 
     verbose_name="The Reviewer",
   )
-  area = models.ForeignKey(Area, related_name='comment', on_delete=models.CASCADE)
+  area = models.ForeignKey(Area, related_name='comments', on_delete=models.CASCADE)
 
   def __str__(self):
     return f'{self.user}: {self.area}'
@@ -91,21 +112,10 @@ class BackcountryDay(models.Model):
   date = models.DateField()
   user = models.ForeignKey(
     User, 
-    related_name='backcountry_day', 
+    related_name='backcountry_days', 
     on_delete=models.CASCADE, 
   )
 
   def __str__(self):
     return f'{self.date}: {self.location}'
 
-
-class FavoriteArea(models.Model):
-  user = models.ForeignKey(
-    User, 
-    related_name='favorite_area', 
-    on_delete=models.CASCADE, 
-  )
-  area = models.ForeignKey(Area, related_name='favorite_area', on_delete=models.CASCADE)
-
-  def __str__(self):
-    return f'{self.id}: {self.user} - {self.area}'
