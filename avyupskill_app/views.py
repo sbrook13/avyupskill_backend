@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from decouple import config
 import requests
+import os
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 # from rest_framework.generics import CreateAPIView, APIView
@@ -95,7 +96,7 @@ class FavoriteAreaView(viewsets.ModelViewSet):
 
 class WeatherView(APIView):
   def get(self, request):
-    url = f'https://api.openweathermap.org/data/2.5/weather?lat=39.6789&lon=-105.9202&appid={config("WEATHER_KEY")}&units=imperial'
+    url = f'https://api.openweathermap.org/data/2.5/weather?lat=39.6789&lon=-105.9202&appid={os.environ["WEATHER_KEY"]}&units=imperial'
     r = requests.get(url, headers={'Content-Type': 'application/json'})
     weather = r.json()
     return Response(weather)
