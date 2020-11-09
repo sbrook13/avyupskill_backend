@@ -17,6 +17,6 @@ router.register('profile', views.ProfileView)
 
 
 urlpatterns = [
-  path('signup', views.UserCreateView.as_view()),
+  path('weather', views.WeatherView.as_view()),
   path('', include(router.urls)),
 ]

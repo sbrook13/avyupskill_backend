@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 # from django.contrib.auth import authenticate
 # from django.contrib.auth.models import update_last_login
-from rest_framework_jwt.settings import api_settings
+# from rest_framework_jwt.settings import api_settings
 from rest_framework import serializers
 from .models import (
   Area,  
@@ -17,7 +17,7 @@ from .models import (
 class UserObjectSerializer(serializers.ModelSerializer):
   class Meta:
     model=User
-    fields=('id','username','password', 'first_name')
+    fields=('id','username','password', 'first_name', 'fav_areas')
 
 
 class AreaObjectSerializer(serializers.ModelSerializer):
@@ -42,11 +42,12 @@ class CommentObjectSerializer(serializers.ModelSerializer):
     fields=('id','feedback','user')
 
 class FavoriteAreaObjectSerializer(serializers.ModelSerializer):
-  user = UserObjectSerializer(many=False)
+  # user = UserObjectSerializer(many=False)
+  area = AreaObjectSerializer(many=False)
   
   class Meta:
-    model=Comment
-    fields=('id','user')
+    model=FavoriteArea
+    fields=('id', 'area')
 
 
 class BackcountryDayObjectSerializer(serializers.ModelSerializer):
@@ -67,36 +68,24 @@ class AreaSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+  fav_areas = FavoriteAreaObjectSerializer(many=True, required=False)
+  comments = CommentObjectSerializer(many=True, required=False)
+  ratings = RatingObjectSerializer(many=True, required=False)
+  backcountry_days = BackcountryDayObjectSerializer(many=True, required=False)
+
   class Meta:
     model=User
-    fields=('id', 'username', 'password')
+    fields=('id', 'username', 'password', 'first_name', 'fav_areas', 'comments', 'ratings', 'backcountry_days')
     extra_kwargs = { 'password': { 'write_only': True} }
   
   def create(self, validated_data):
-    validated_data['password'] = make_password(validated_data['password'])
-    user = User.objects.create_user(**validated_data)
-    
-    return user 
-
-class UserProfileSerializer(serializers.ModelSerializer):
-  backcountry_days = BackcountryDayObjectSerializer(many=True, required=False)
-  comments = CommentObjectSerializer(many=True, required=False)
-  ratings = RatingObjectSerializer(many=True, required=False)
-  fav_areas = FavoriteAreaObjectSerializer(many=True, required=False)
-  
-  class Meta:
-    model=User
-    fields=(
-      'id',
-      'first_name',
-      'username', 
-      'email',
-      'backcountry_days', 
-      'comments', 
-      'ratings',
-      'fav_areas'    
+    user = User.objects.create(
+      first_name = validated_data['first_name'],
+      username = validated_data['username'],
+      password = make_password(validated_data['password']),
     )
-  
+    
+    return user  
 
 class RatingSerializer(serializers.ModelSerializer):
   class Meta:
@@ -111,7 +100,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class FavoriteAreaSerializer(serializers.ModelSerializer):
   class Meta:
-    model=Comment
+    model=FavoriteArea
     fields=('id','user', 'area')
 
 
@@ -142,4 +131,4 @@ class CourseSerializer(serializers.ModelSerializer):
 class BeaconParkSerializer(serializers.ModelSerializer):
   class Meta:
     model=BeaconPark
-    fields=('id','name','lat', 'lon', 'nearest_city' )
+    fields=('id','name','lat', 'lon', 'location', 'description' )

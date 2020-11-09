@@ -1,6 +1,9 @@
 from django.shortcuts import render
+from decouple import config
+import requests
 from rest_framework import status, viewsets
-from rest_framework.generics import CreateAPIView, RetrieveAPIView
+from rest_framework.views import APIView
+# from rest_framework.generics import CreateAPIView, APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly, IsAuthenticated
 import pdb
@@ -21,7 +24,7 @@ from .serializers import (
   CourseSerializer, 
   BeaconParkSerializer,
   UserSerializer, 
-  UserProfileSerializer,
+  # UserProfileSerializer,
   CommentSerializer, 
   RatingSerializer, 
   BackcountryDaySerializer,
@@ -34,28 +37,28 @@ class UserView(viewsets.ModelViewSet):
   serializer_class = UserSerializer
   permission_classes = [AllowAny,]
 
-class UserCreateView(CreateAPIView):
-  serializer_class = UserSerializer
-  permission_classes = (AllowAny,)
+# class UserCreateView(CreateAPIView):
+#   serializer_class = UserSerializer
+#   permission_classes = (AllowAny,)
 
-  def post(self, request):
-    serializer = self.serializer_class(data = request.data)
-    serializer.is_valid(raise_exception = True)
-    serializer.save()
-    status_code = status.HTTP_201_CREATED
+#   def post(self, request):
+#     serializer = self.serializer_class(data = request.data)
+#     serializer.is_valid(raise_exception = True)
+#     serializer.save()
+#     status_code = status.HTTP_201_CREATED
 
-    response = {
-      'user': serializer.data,
-      'status': status_code,
-      'message': 'User created.'
-    }
+#     response = {
+#       'user': serializer.data,
+#       'status': status_code,
+#       'message': 'User created.'
+#     }
 
-    return Response(response)
+#     return Response(response)
 
 class ProfileView(viewsets.ViewSet):
   queryset = User.objects.all()
   def list(self, request):
-    serializer = UserProfileSerializer(request.user)
+    serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
 class AreaView(viewsets.ModelViewSet):
@@ -87,5 +90,12 @@ class BackcountryDayView(viewsets.ModelViewSet):
 
 class FavoriteAreaView(viewsets.ModelViewSet):
   queryset = FavoriteArea.objects.all()
-  serializer_class = BackcountryDaySerializer
+  serializer_class = FavoriteAreaSerializer
   permission_classes = (IsAuthenticatedOrReadOnly,)
+
+class WeatherView(APIView):
+  def get(self, request):
+    url = f'https://api.openweathermap.org/data/2.5/weather?lat=39.6789&lon=-105.9202&appid={config("WEATHER_KEY")}&units=imperial'
+    r = requests.get(url, headers={'Content-Type': 'application/json'})
+    weather = r.json()
+    return Response(weather)
