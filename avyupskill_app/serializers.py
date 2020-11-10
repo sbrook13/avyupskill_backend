@@ -103,7 +103,7 @@ class FavoriteAreaSerializer(serializers.ModelSerializer):
 class BackcountryDaySerializer(serializers.ModelSerializer):
   class Meta:
     model=BackcountryDay
-    fields=('id','location','date', 'user', 'area')
+    fields=('id','location','date', 'user', 'journal')
 
 
 class CourseSerializer(serializers.ModelSerializer):
