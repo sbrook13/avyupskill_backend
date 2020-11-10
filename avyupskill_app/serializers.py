@@ -1,7 +1,4 @@
 from django.contrib.auth.hashers import make_password
-# from django.contrib.auth import authenticate
-# from django.contrib.auth.models import update_last_login
-# from rest_framework_jwt.settings import api_settings
 from rest_framework import serializers
 from .models import (
   Area,  
@@ -80,7 +77,6 @@ class UserSerializer(serializers.ModelSerializer):
   
   def create(self, validated_data):
     user = User.objects.create(
-      first_name = validated_data['first_name'],
       username = validated_data['username'],
       password = make_password(validated_data['password']),
     )

@@ -22,6 +22,7 @@ urlpatterns = [
     path('', include('avyupskill_app.urls')),
     path('auth/', include('rest_framework.urls')),
     path('login/', obtain_jwt_token),
+    path('token/', obtain_jwt_token),
     path('refresh/', refresh_jwt_token),
     path('profile/', verify_jwt_token)
 ]
