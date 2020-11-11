@@ -28,7 +28,7 @@ class RatingObjectSerializer(serializers.ModelSerializer):
 
   class Meta:
     model=Rating
-    fields=('id','user')
+    fields=('id', 'rating', 'user')
 
 
 class CommentObjectSerializer(serializers.ModelSerializer):
@@ -86,7 +86,7 @@ class UserSerializer(serializers.ModelSerializer):
 class RatingSerializer(serializers.ModelSerializer):
   class Meta:
     model=Rating
-    fields=('id','rating','user', 'area')
+    fields=('id', 'rating', 'user', 'area')
 
 
 class CommentSerializer(serializers.ModelSerializer):
