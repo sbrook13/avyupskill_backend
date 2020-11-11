@@ -13,13 +13,14 @@ if (not os.environ.get('PYTHONHTTPSVERIFY', '') and
 getattr(ssl, '_create_unverified_context', None)):
   ssl._create_default_https_context = ssl._create_unverified_context
 
+courses_all = 'https://aiare.info/course_list.php?criteria=co&type=av'
 course_page1 = 'https://aiare.info/course_list.php?page=1&skip=0&max=100&sort=dateBegin&criteria=co'
 course_page2 = 'https://aiare.info/course_list.php?page=2&skip=100&max=100&sort=dateBegin&criteria=co'
 course_page3 = 'https://aiare.info/course_list.php?page=3&skip=200&max=100&sort=dateBegin&criteria=co'
 course_page4 = 'https://aiare.info/course_list.php?page=4&skip=300&max=100&sort=dateBegin&criteria=co'
 detail_base_url = 'https://aiare.info/'
 
-page_html = urllib.request.urlopen(course_page1).read()
+page_html = urllib.request.urlopen(courses_all).read()
 
 # HTML Parsing
 soup = BeautifulSoup(page_html, 'html.parser')
