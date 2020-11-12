@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'avyupskill_app.User'
 
 CORS_ORIGIN_ALLOW_ALL = False 
-CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'http://avyupskill.web.app')
+CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'https://avyupskill.web.app', 'https://avyupskill.firebaseapp.com/')
 
 REST_FRAMEWORK = {     
     'DEFAULT_PERMISSION_CLASSES': [         
