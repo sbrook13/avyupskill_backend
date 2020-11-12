@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ['SECRET_KEY'] or config('SECRET_KEY')
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY'] or config('SECRET_KEY')
+# SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'avyupskill_app.User'
 
 CORS_ORIGIN_ALLOW_ALL = False 
-CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'http://avyupskill.web.app' ,)
+CORS_ORIGIN_WHITELIST = ('http://localhost:3000', 'https://avyupskill.web.app', 'https://avyupskill.firebaseapp.com/')
 
 REST_FRAMEWORK = {     
     'DEFAULT_PERMISSION_CLASSES': [         
@@ -161,8 +161,8 @@ JWT_AUTH = {
   'JWT_RESPONSE_PAYLOAD_HANDLER':
   'rest_framework_jwt.utils.jwt_response_payload_handler',
  
-  'JWT_SECRET_KEY': config('JWT_SECRET_KEY'),
-#   'JWT_SECRET_KEY': os.environ['JWT_SECRET_KEY'] or config('JWT_SECRET_KEY'),
+#   'JWT_SECRET_KEY': config('JWT_SECRET_KEY'),
+  'JWT_SECRET_KEY': os.environ['JWT_SECRET_KEY'] or config('JWT_SECRET_KEY'),
   'JWT_GET_USER_SECRET_KEY': None,
   'JWT_PUBLIC_KEY': None,
   'JWT_PRIVATE_KEY': None,
